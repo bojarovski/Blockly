@@ -18,7 +18,7 @@ function importCode() {
     demoWorkspace
   );
 }
-
+// var checkForColision = false;
 function startAgain() {
   ry = starty;
   rx = startx;
@@ -34,8 +34,6 @@ function showCode() {
 }
 
 function runCode() {
-  console.log("====================");
-
   window.LoopTrap = 1000;
   var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
   Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
@@ -49,7 +47,7 @@ function runCode() {
   }
   draw(); // Redraw the grid after each move
 }
-
+// var checkForColision = false;
 var w = 11; // Increased width
 var h = 11; // Increased height
 var rx = 0; // Player's car X position
@@ -190,22 +188,59 @@ function init() {
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
+var checkColison = false;
+function checkForColision(boolean) {
+  checkColison = boolean;
+  return boolean;
+}
 
 // Check if there's a collision with another car
-function checkCollision(newX, newY) {
+function checkCollision(newX, newY, direction) {
+  if (checkColison) {
+    console.log("ENABLE AUTO PILOT", newX, newY);
+
+    // Correct movement logic inside the switch
+    switch (direction) {
+      case "moveDown":
+        newY += 1; // Move down
+        break;
+      case "moveUp":
+        newY -= 1; // Move up
+        break;
+      case "moveLeft":
+        newX -= 1; // Move left
+        break;
+      case "moveRight":
+        newX += 1; // Move right
+        break;
+      default:
+        console.log("Unknown direction");
+    }
+  }
+
   // Check for border collision
   if (newX <= 0 || newX >= w - 1 || newY <= 0 || newY >= h - 1) {
-    return true; // Border collision detected
+    if (checkColison) {
+      console.log("You need to stop, you will crash into a wall.");
+      checkForColision(false);
+      return { collision: false, stop: true };
+    }
+    return { collision: true, stop: true }; // Border collision detected
   }
 
   // Check for collision with static cars
   for (let carPos of staticCarPositions) {
     if (carPos.x === newX && carPos.y === newY) {
-      return true; // Static car collision detected
+      if (checkColison) {
+        console.log("You need to stop, you will crash into a car.");
+        checkForColision(false);
+        return { collision: false, stop: true };
+      }
+      return { collision: true, stop: true }; // Static car collision detected
     }
   }
 
-  return false; // No collision (either border or static car)
+  return { collision: false, stop: true }; // No collision (either border or static car)
 }
 
 // Check if the player's car is at the parking spot

@@ -73,4 +73,36 @@ Blockly.defineBlocksWithJsonArray([
     tooltip: "Checks if a collision occurs when moving in a given direction",
     helpUrl: "",
   },
+  (Blockly.Blocks["controls_while_do"] = {
+    init: function () {
+      this.jsonInit({
+        type: "controls_while_do",
+        message0: "while %1 do %2",
+        args0: [
+          {
+            type: "input_value",
+            name: "CONDITION",
+            check: "Boolean",
+          },
+          {
+            type: "input_statement",
+            name: "DO",
+          },
+        ],
+        previousStatement: null,
+        nextStatement: null,
+        colour: "%{BKY_LOOPS_HUE}",
+        tooltip: "Repeat the actions while the condition is true.",
+        helpUrl: "",
+      });
+    },
+  }),
+  {
+    type: "checkColison",
+    message0: "Collision Check",
+    output: "Boolean",
+    colour: 300,
+    tooltip: "Checks if a collision occurs when moving in a given direction",
+    helpUrl: "",
+  },
 ]);
