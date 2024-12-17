@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>DSMJ example</title>
+  <script src="./node_modules/blockly/blockly_compressed.js"></script>
+  <script src="./node_modules/blockly/blocks_compressed.js"></script>
+  <script src="./node_modules/blockly/javascript_compressed.js"></script>
+  <script src="./node_modules/blockly/msg/en.js"></script>
+  <script src="movements.js"></script>
+  <script src="movements-gen.js"></script>
+  <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      background-color: #fff;
+      font-family: sans-serif;
+    }
+
+    h1 {
+      font-weight: normal;
+      font-size: 140%;
+    }
+
+    #table {
+      height: 100%;
+      width: 100%;
+    }
+
+    #blocklyArea {
+      height: 99%;
+    }
+
+    img {
+      display: block;
+    }
+
+    table,
+    tr,
+    td,
+    img {
+      margin: 0;
+      padding: 0;
+      border: none;
+      border-collapse: collapse;
+    }
+
+    .center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    #field td {
+      position: relative;
+    }
+
+    #field img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 50px;
+      width: 50px;
+    }
+
+    #field img:first-child {
+      position: relative;
+    }
+  </style>
+</head>
+
+<body>
+  <table id="table">
+    <tr>
+      <td>
+        <h2>DSMJ primer 2: Robot gre domov</h1>
+          <h3>Zgled po:
+            <a href="http://pisek.acm.si/contents/4907-4902-621190887497882908-970469977552543083-156249197232542929/">Prenašanje
+              paketov</a>
+          </h3>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 10px;">
+        <button onclick="exportCode()">Izvozi</button>
+        <button onclick="importCode()">Uvozi</button>
+        <input id="textinput" type="text" />
+        <button onclick="startAgain()">Ponovi</button>
+      </td>
+      <td style="padding: 20px;">
+        <button onclick="showCode()">Koda</button>
+        <button onclick="runCode()">Start</button>
+      </td>
+    </tr>
+    <tr>
+      <td width="50%" height="100%">
+        <div id="blocklyDiv" style="height: 100%; width: 100%;"></div>
+      </td>
+      <td style="padding: 20px;position: relative;">
+        <div class="left">
+          <table id="field"></table>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
+
+  <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
+    <category name="Commands" colour="290">
+      <block type="program"></block>
+      <block type="moveRight"></block>
+      <block type="moveLeft"></block>
+      <block type="moveUp"></block>
+      <block type="moveDown"></block>
+    </category>
+    <category name="Loops" colour="%{BKY_LOOPS_HUE}">
+      <block type="controls_repeat_ext">
+        <value name="TIMES">
+          <block type="math_number">
+            <field name="NUM">10</field>
+          </block>
+        </value>
+      </block>
+      <block type="math_number">
+        <field name="NUM">0</field>
+      </block>
+    </category>
+    <category name="Conditions" colour="%{BKY_LOGIC_HUE}">
+      <block type="controls_if"></block>
+      <block type="logic_compare">
+        <field name="OP">EQ</field>
+      </block>
+      <block type="logic_operation">
+        <field name="OP">AND</field>
+      </block>
+      <block type="logic_negate"></block>
+      <block type="logic_boolean">
+        <field name="BOOL">TRUE</field>
+      </block>
+      <block type="isColision"></block>
+    </category>
+    
+        
+  </xml>
+
+  <xml xmlns="https://developers.google.com/blockly/xml" id="startBlocks" style="display: none">
+    <block type="program">
+    </block>
+  </xml>
+
+  <script src="workspace.js"></script>
+
+</body>
+
+</html>
