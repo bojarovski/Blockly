@@ -4,10 +4,10 @@ const checkDrawSleep = "draw(); \nawait sleep(300);\n";
 
 // Function to check collision
 const checkCollisionCode = (direction) =>
-  `if (checkCollision(rx, ry, '${direction}').collision) { alert("Crash! Try Again."); init(); return; } else {return}`;
+  `if (checkCollision(rx, ry, '${direction}')) { alert("Crash! Try Again."); init(); return; } else if (checkCollision(rx, ry, '${direction}') === 'stop') { return; }`;
 
 Blockly.JavaScript["checkColison"] = function (block) {
-  return ["checkForColision()", Blockly.JavaScript.ORDER_ATOMIC];
+  return ["checkForColision(true)", Blockly.JavaScript.ORDER_ATOMIC];
 };
 
 // Code for 'moveRight' block

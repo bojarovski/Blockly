@@ -223,9 +223,9 @@ function checkCollision(newX, newY, direction) {
     if (checkColison) {
       console.log("You need to stop, you will crash into a wall.");
       checkForColision(false);
-      return { collision: false, stop: true };
+      return "stop";
     }
-    return { collision: true, stop: true }; // Border collision detected
+    return true; // Border collision detected
   }
 
   // Check for collision with static cars
@@ -234,13 +234,12 @@ function checkCollision(newX, newY, direction) {
       if (checkColison) {
         console.log("You need to stop, you will crash into a car.");
         checkForColision(false);
-        return { collision: false, stop: true };
+        return "stop";
       }
-      return { collision: true, stop: true }; // Static car collision detected
+      return true; // Static car collision detected
     }
   }
-
-  return { collision: false, stop: true }; // No collision (either border or static car)
+  return false; // No collision (either border or static car)
 }
 
 // Check if the player's car is at the parking spot
