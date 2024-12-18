@@ -41,12 +41,46 @@ function runCode() {
   try {
     eval("(async () => {" + code + "})()");
     // Print the car's coordinates after each move
-    console.log(`Car's new position: x = ${rx}, y = ${ry}`);
   } catch (e) {
     alert(e);
   }
+
   draw(); // Redraw the grid after each move
 }
+
+function animateMove(startX, startY, targetX, targetY) {
+  let currentX = startX;
+  let currentY = startY;
+  const steps = 100; // Number of animation steps
+  let step = 0;
+
+  // Define the step size (movement per frame)
+  const deltaX = (targetX - startX) / steps;
+  const deltaY = (targetY - startY) / steps;
+
+  function move() {
+    if (step < steps) {
+      currentX += deltaX;
+      currentY += deltaY;
+      step++;
+
+      // Update car's new position
+      rx = Math.round(currentX);
+      ry = Math.round(currentY);
+
+      draw(); // Redraw the grid
+
+      requestAnimationFrame(move); // Call the move function for the next frame
+    } else {
+      rx = targetX;
+      ry = targetY;
+      draw(); // Ensure the final position is set after animation
+    }
+  }
+
+  move(); // Start the animation
+}
+
 // var checkForColision = false;
 var w = 11; // Increased width
 var h = 11; // Increased height
@@ -200,29 +234,29 @@ function checkCollision(newX, newY, direction) {
     console.log("ENABLE AUTO PILOT", newX, newY);
 
     // Correct movement logic inside the switch
-    switch (direction) {
-      case "moveDown":
-        newY += 1; // Move down
-        break;
-      case "moveUp":
-        newY -= 1; // Move up
-        break;
-      case "moveLeft":
-        newX -= 1; // Move left
-        break;
-      case "moveRight":
-        newX += 1; // Move right
-        break;
-      default:
-        console.log("Unknown direction");
-    }
+    // switch (direction) {
+    //   case "moveDown":
+    //     newY += 1; // Move down
+    //     break;
+    //   case "moveUp":
+    //     newY -= 1; // Move up
+    //     break;
+    //   case "moveLeft":
+    //     newX -= 1; // Move left
+    //     break;
+    //   case "moveRight":
+    //     newX += 1; // Move right
+    //     break;
+    //   default:
+    //     console.log("Unknown direction");
+    // }
   }
 
   // Check for border collision
   if (newX <= 0 || newX >= w - 1 || newY <= 0 || newY >= h - 1) {
     if (checkColison) {
       console.log("You need to stop, you will crash into a wall.");
-      checkForColision(false);
+
       return "stop";
     }
     return true; // Border collision detected
@@ -233,7 +267,7 @@ function checkCollision(newX, newY, direction) {
     if (carPos.x === newX && carPos.y === newY) {
       if (checkColison) {
         console.log("You need to stop, you will crash into a car.");
-        checkForColision(false);
+
         return "stop";
       }
       return true; // Static car collision detected

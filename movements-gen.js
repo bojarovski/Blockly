@@ -4,7 +4,18 @@ const checkDrawSleep = "draw(); \nawait sleep(300);\n";
 
 // Function to check collision
 const checkCollisionCode = (direction) =>
-  `if (checkCollision(rx, ry, '${direction}')) { alert("Crash! Try Again."); init(); return; } else if (checkCollision(rx, ry, '${direction}') === 'stop') { return; }`;
+  `
+if (checkCollision(rx, ry, '${direction}') === true) { 
+  alert("Crash! Try Again.");
+  init();
+  return; 
+} else if (checkCollision(rx, ry, '${direction}') === 'stop') { 
+  console.log('elif'); 
+  checkForColision(false); 
+  return; 
+}
+console.log("===============", checkCollision(rx, ry, '${direction}'));
+`;
 
 Blockly.JavaScript["checkColison"] = function (block) {
   return ["checkForColision(true)", Blockly.JavaScript.ORDER_ATOMIC];
