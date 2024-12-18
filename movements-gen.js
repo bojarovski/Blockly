@@ -7,20 +7,20 @@ const checkCollisionCode = (direction) =>
   `
 if (checkCollision(rx, ry, '${direction}') === true) { 
   alert("Crash! Try Again.");
-  init();
-  return; 
-} else if (checkCollision(rx, ry, '${direction}') === 'stop') { 
-  console.log('elif'); 
-  checkForColision(false); 
-  return; 
+  startAgain();
+  return true; 
+} else if (checkCollision(rx, ry, '${direction}') === 'stop') {   
+  return false; 
 }
-console.log("===============", checkCollision(rx, ry, '${direction}'));
+
 `;
 
 Blockly.JavaScript["checkColison"] = function (block) {
   return ["checkForColision(true)", Blockly.JavaScript.ORDER_ATOMIC];
 };
-
+Blockly.JavaScript["parkingCheck"] = function (block) {
+  return ["checkForParking(true)", Blockly.JavaScript.ORDER_ATOMIC];
+};
 // Code for 'moveRight' block
 Blockly.JavaScript["moveRight"] = function (block) {
   return (

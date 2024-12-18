@@ -101,7 +101,7 @@ const carImages = [
 var staticCarPositions = [];
 // Store car images for static positions (each static car gets a fixed image)
 var staticCarImages = [];
-
+var parkingCoordinates = null;
 // Initialize static car positions and assign images to them
 function generateStaticCars() {
   const totalCars = 10; // Define how many cars to randomly place
@@ -148,7 +148,10 @@ function draw() {
       } else {
         // Set the background image based on field value
         let bg = document.createElement("img");
-        if (field[y][x] === 1) bg.src = "parking.jpg"; // Parking spot
+        if (field[y][x] === 1) {
+          bg.src = "parking.jpg";
+          parkingCoordinates = { x: x, y: y };
+        } // Parking spot
         else bg.src = "bg.jpg"; // Regular background
         col.appendChild(bg);
       }
@@ -227,47 +230,38 @@ function checkForColision(boolean) {
   checkColison = boolean;
   return boolean;
 }
+var autoParking = false;
+function checkForParking(boolean) {
+  autoParking = boolean;
+  return boolean;
+}
 
 // Check if there's a collision with another car
 function checkCollision(newX, newY, direction) {
-  if (checkColison) {
-    console.log("ENABLE AUTO PILOT", newX, newY);
-
-    // Correct movement logic inside the switch
-    // switch (direction) {
-    //   case "moveDown":
-    //     newY += 1; // Move down
-    //     break;
-    //   case "moveUp":
-    //     newY -= 1; // Move up
-    //     break;
-    //   case "moveLeft":
-    //     newX -= 1; // Move left
-    //     break;
-    //   case "moveRight":
-    //     newX += 1; // Move right
-    //     break;
-    //   default:
-    //     console.log("Unknown direction");
-    // }
+  if (
+    autoParking &&
+    newX === parkingCoordinates.x &&
+    newY === parkingCoordinates.y
+  ) {
+    console.log("PARKING");
+    return "stop";
   }
-
-  // Check for border collision
-  if (newX <= 0 || newX >= w - 1 || newY <= 0 || newY >= h - 1) {
+  if (newX <= 0 || newX >= w - 1 || newY <= 1 || newY >= h - 0) {
     if (checkColison) {
       console.log("You need to stop, you will crash into a wall.");
-
       return "stop";
     }
+  }
+  if (newX === 0 || newX === w - 1 || newY === 0 || newY === h - 1) {
     return true; // Border collision detected
   }
+  // Check for border collision
 
   // Check for collision with static cars
   for (let carPos of staticCarPositions) {
     if (carPos.x === newX && carPos.y === newY) {
       if (checkColison) {
         console.log("You need to stop, you will crash into a car.");
-
         return "stop";
       }
       return true; // Static car collision detected

@@ -105,4 +105,12 @@ Blockly.defineBlocksWithJsonArray([
     tooltip: "Checks if a collision occurs when moving in a given direction",
     helpUrl: "",
   },
+  {
+    type: "parkingCheck",
+    message0: "Parking Check",
+    output: "Boolean",
+    colour: 300,
+    tooltip: "Checks if u are on parking place",
+    helpUrl: "",
+  },
 ]);
