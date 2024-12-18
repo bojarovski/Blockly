@@ -5,14 +5,14 @@ const checkDrawSleep = "draw(); \nawait sleep(300);\n";
 // Function to check collision
 const checkCollisionCode = (direction) =>
   `
+console.log("===============", checkCollision(rx, ry, '${direction}'));
 if (checkCollision(rx, ry, '${direction}') === true) { 
   alert("Crash! Try Again.");
   startAgain();
   return true; 
-} else if (checkCollision(rx, ry, '${direction}') === 'stop') {   
+} else if (checkCollision(rx, ry, '${direction}') === 'stop') { 
   return false; 
 }
-
 `;
 
 Blockly.JavaScript["checkColison"] = function (block) {

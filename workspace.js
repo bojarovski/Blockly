@@ -151,8 +151,9 @@ function draw() {
         if (field[y][x] === 1) {
           bg.src = "parking.jpg";
           parkingCoordinates = { x: x, y: y };
-        } // Parking spot
-        else bg.src = "bg.jpg"; // Regular background
+        } else {
+          bg.src = "bg.jpg"; // Regular background
+        }
         col.appendChild(bg);
       }
 
@@ -166,22 +167,31 @@ function draw() {
         }
       }
 
-      // Check if the position is for the player's car (ensure it's not occupied)
+      // Check if the position is for the player's car
       if (y === ry && x === rx) {
-        // Ensure the player's car is not placed on an occupied space
-        if (field[y][x] === 0 && !isPositionOccupied(x, y)) {
-          let car = document.createElement("img");
-          car.src = "myCar.jpg";
-          col.appendChild(car);
+        let car = document.createElement("img");
+        car.src = "myCar.jpg";
+        col.appendChild(car);
+
+        // Check if the player's car is on the parking spot
+        if (field[y][x] === 1) {
+          alert("You Win!");
         }
       }
 
+      // Add coordinates as text under the image
+      let coordText = document.createElement("div");
+      coordText.textContent = `(${x}, ${y})`;
+      coordText.style.fontSize = "10px";
+      coordText.style.textAlign = "center";
+      col.appendChild(coordText);
+
       row.appendChild(col);
     }
-
     table.appendChild(row);
   }
 }
+
 function isPositionOccupied(x, y) {
   // Check if the position is occupied by a static car
   for (let pos of staticCarPositions) {
@@ -238,15 +248,37 @@ function checkForParking(boolean) {
 
 // Check if there's a collision with another car
 function checkCollision(newX, newY, direction) {
-  if (
-    autoParking &&
-    newX === parkingCoordinates.x &&
-    newY === parkingCoordinates.y
-  ) {
-    console.log("PARKING");
-    return "stop";
+  console.log(
+    "PARKING IS ",
+    parkingCoordinates.x,
+    "and y=",
+    parkingCoordinates.y
+  );
+  console.log("CAR IS ", newX, "and y=", newY);
+
+  if (autoParking) {
+    switch (direction) {
+      case "moveDown":
+        newY -= 1; // Move down
+        break;
+      case "moveUp":
+        newY += 1; // Move up
+        break;
+      case "moveLeft":
+        newX += 1; // Move left
+        break;
+      case "moveRight":
+        newX -= 1; // Move right
+        break;
+      default:
+        console.log("Unknown direction");
+    }
+    if (newX === parkingCoordinates.x && newY === parkingCoordinates.y) {
+      console.log("PARKING");
+      return "stop";
+    }
   }
-  if (newX <= 0 || newX >= w - 1 || newY <= 1 || newY >= h - 0) {
+  if (newX <= 0 || newX >= w - 1 || newY <= 1 || newY >= h - 1) {
     if (checkColison) {
       console.log("You need to stop, you will crash into a wall.");
       return "stop";
