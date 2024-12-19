@@ -11,6 +11,8 @@ if (checkCollision(rx, ry, '${direction}') === true) {
   startAgain();
   return true; 
 } else if (checkCollision(rx, ry, '${direction}') === 'stop') { 
+  checkForColision(false);
+  checkForParking(false);
   return false; 
 }
 `;

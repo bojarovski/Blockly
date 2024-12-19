@@ -259,10 +259,10 @@ function checkCollision(newX, newY, direction) {
   if (autoParking) {
     switch (direction) {
       case "moveDown":
-        newY -= 1; // Move down
+        newY += 1; // Move down
         break;
       case "moveUp":
-        newY += 1; // Move up
+        newY -= 2; // Move up
         break;
       case "moveLeft":
         newX += 1; // Move left
@@ -278,7 +278,7 @@ function checkCollision(newX, newY, direction) {
       return "stop";
     }
   }
-  if (newX <= 0 || newX >= w - 1 || newY <= 1 || newY >= h - 1) {
+  if (newX <= 0 || newX >= w - 1 || newY <= 0 || newY >= h - 1) {
     if (checkColison) {
       console.log("You need to stop, you will crash into a wall.");
       return "stop";
